@@ -1,0 +1,49 @@
+将二维码类库放到Vendor目录下文件名为phpqrcode.php现放在百度网盘下有需要时下载
+
+下载地址:http://pan.baidu.com/s/1pL6veER 
+
+以下为具体的操作方法
+
+前端代码
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<script type="text/javascript" src="/js/jquery.js"></script>
+</head>
+<body>
+	<button class='code'>点击出现二维码</button>
+	<div class='container' style="width:500px;height:500px;border:1px solid red;display:none;" ></div>
+</body>
+</html>
+<script>
+	$(function(){
+		$('.code').click(function(){
+            var str='<p>二维码图片</p>'+
+            	"<img width='130' height='130' src='/Homes/QrCode' />";
+            $('.container').html(str);
+		});
+	});
+</script>
+
+后端代码
+public function QrCode() {
+	$url = 'www.baidu.com';
+	$file 	 = false;
+	require_once(dirname(dirname(dirname(__FILE__))).'/vendor/QRCode/phpqrcode.php');
+	$content = (is_string($url) ? $url : json_encode($url));
+	//二维码参数配置
+	$error_correction_level = 'L';
+	$matrix_point_size 		= 6;
+	//生成二维码
+	\QRcode::png($content, $file, $error_correction_level, $matrix_point_size, 2);
+	exit;
+}
+
+注意这行代码前面的反斜杠，意思是脱离当前命名空间绝对使用自己的命名空间，在没有命名空间的框架中可以不加
+，但在有命名空间的框架中一定要加，否则报错
+\QRcode::png($content, $file, $error_correction_level, $matrix_point_size, 2);
+
+写的比较简单，能够实现根据链接地址出现二维码
+
