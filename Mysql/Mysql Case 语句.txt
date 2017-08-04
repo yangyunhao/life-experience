@@ -1,0 +1,31 @@
+1   CASE 函数中将给出的表姐达式的值与WHEN语句中指定值进行比较，一致时返回对应的结果值，如果与所有的WHEN语句中的值不一致
+则返回ELSE中的值，WHEN语句可根据需求添加
+
+    当使用相等运算时语句如下
+    SELECT
+    	`name`,
+    	CASE sex
+    WHEN 1 THEN
+    	'男'
+    WHEN 2 THEN
+    	'女'
+    ELSE
+    	'妖'
+    END AS sex
+    FROM
+    	test.customer;
+
+2   但是如果表达式的值不能用'='进行比较时，上面的写法就行不通了这里CASE函数提供了另外的一种写法，具体如下
+    模拟对商品表的商品价格进行一个判定，小于1000位低价商品，1000-7000之间为中等价位尚良品，否则为高价商品
+    SELECT
+    	pname,
+    	CASE
+    WHEN price < 1000 THEN
+    	'低'
+    WHEN price < 7000 THEN
+    	'中'
+    ELSE
+    	'高'
+    END AS price
+    FROM
+    	test.product
