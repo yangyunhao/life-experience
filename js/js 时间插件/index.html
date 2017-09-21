@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>时间插件示例</title>
+	<script type="text/javascript" src="laydate-1.1/laydate.js"></script>
+	<script type="text/javascript" src="jquery.js"></script>
+</head>
+<body>
+<h1>示例代码页面需要引入jquery以及插件插件也有自行下载</h1>
+	<input class="txt_icon i_bg" type="text" id="time_start">
+    <span class="line_date"></span>
+    <input class="txt_icon i_bg" type="text" id="time_end">
+</body>
+</html>
+<script type="text/javascript">
+    $(function(){
+
+        /*-- 日期交互 --*/
+        laydate.skin("dahong");
+        var start = {
+            elem: '#time_start',
+            //min: laydate.now(), //设定最小日期为当前日期
+            max: '2099-06-16 23:59:59', //最大日期
+            choose: function(datas){
+                end.min = datas; //开始日选好后，重置结束日的最小日期
+                end.start = datas;//将结束日的初始值设定为开始日
+            }
+        };
+        var end = {
+            elem: '#time_end',
+            min: $('#time_start').val(),
+            max: '2099-06-16 23:59:59',
+            choose: function(datas){
+                start.max = datas; //结束日选好后，重置开始日的最大日期
+            }
+        };
+        laydate(start);
+        laydate(end);
+    });
+</script>
