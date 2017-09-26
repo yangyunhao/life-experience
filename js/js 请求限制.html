@@ -1,0 +1,23 @@
+<script>
+	// 此段代码 是我在项目中写的代码,并不能执行，有需要的可以根据代码做出修改
+	
+	$(function(){
+		var status = true; // 初始化状态值 默认为true
+        $(document).on('click','.refer',function(){
+            
+            if(status){ // 判断只有状态为真的时候才可以请求
+                status = false; // 进来后立马修改状态 
+                $.post('/PayBills/send',$('#dataForm').serialize(),function(data){ // 请求地址
+                    if(data.status){
+                        prompt(data.msg, function () {
+                            window.location.href='/PayBills/index'; // 响应成功跳走不在修改状态,否则还是会多请求
+                        });
+                    }else{
+                        prompt(data.msg); // 失败给出响应
+                        status = true; // 因为失败可能还需要请求 所以修改状态
+                    }
+                },'json'); // 特别注意这个JSON必须加,否则响应数据不是一个对象
+            }
+        });
+	})
+</script>
