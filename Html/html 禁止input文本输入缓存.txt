@@ -1,0 +1,14 @@
+多数浏览器默认会缓存input的值，只有使用ctl+F5强制刷新的才可以清除缓存记录。
+
+如果不想让浏览器缓存input的值，有2种方法：
+
+方法一： 
+在不想使用缓存的input中添加 autocomplete="off"; 
+eg: <input type="text" autocomplete="off" name="test" />
+
+方法二： 
+在 input 所在的form标签中添加 autocomplete="off"; 
+eg:
+<form action="#" autocomplete="off">
+<input type="text" autocomplete="off" name="test" />
+</form>
