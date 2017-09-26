@@ -1,0 +1,30 @@
+
+// 此段代码为示例代码 并不能运行 ，若需使用请根据实际情况做出更改
+
+<form action="/PayBills/billContentList" method="post" id="searchForm" autocomplete="off" onkeypress="if(event.keyCode==13) document.getElementById('search_inp').click();">
+    <div class="repeat_search clearfix">
+        <div class="form_top_ctrl">
+            <span class="school_name">学生姓名</span>
+            <input type="text" name="student_name" class="inp_txt" placeholder="请输入学生姓名">
+        </div>
+        <div class="form_top_ctrl">
+            <span class="school_name">家长手机号</span>
+            <input type="text" name="parent_phone" class="inp_txt" placeholder="请输入家长手机号">
+        </div>
+        <div class="parcel_zone form_top_ctrl">
+            <input type="button" value="搜索" id="search_inp" class="search_inp" style="margin-left: 0;">
+            <span class="reset_sp">重置</span>
+        </div>
+    </div>
+</form>
+
+// 以下为 js 代码
+
+<script>
+$(function(){
+    // 账单内容搜索
+    $('#search_inp').click(function() {
+        jQuery('#searchForm').submit();
+    }); 
+});
+</script>
