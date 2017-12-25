@@ -1,0 +1,27 @@
+当git提交文件时
+
+*** Please tell me who you are.
+
+Run
+
+  git config --global user.email "you@example.com"
+  git config --global user.name "Your Name"
+
+to set your account's default identity.
+Omit --global to set the identity only in this repository.
+
+fatal: unable to auto-detect email address (got 'aaa@aa.(none)')
+
+这是是git没有配置的原因。
+
+解决办法如下
+
+1.打开项目所在目录，找到隐藏的.git文件夹。注意这个文件夹是隐藏的，显示隐藏出来就行。
+
+2.打开文件夹里的config文件。
+
+3.添加这三行到文件：
+
+[user]
+    name = XXX(自己的名称)
+    email = XXXX(邮箱)
