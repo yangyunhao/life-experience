@@ -1,0 +1,6 @@
+showdoc    : 接口管理工具
+codeing    : 代码托管
+teamviewer : 第三方控制电脑软件
+火萤       : 动态桌面
+xshell     : 连接Linux系统
+FileZilla  : FTP连接Linux服务器上传(拉取)文件
