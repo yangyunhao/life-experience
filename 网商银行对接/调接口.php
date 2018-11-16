@@ -1,211 +1,211 @@
 <?php
     class bank {
         private $original = [
-            'version' => '2.0',
+            'version'    => '2.0',
             'partner_id' => '200001220534', //  合作者ID
-            'charset' => 'UTF-8', //
+            'charset'    => 'UTF-8', //
         ];
-        private $url = 'http://test.tc.mybank.cn/gop/gateway.do';
-        private $uid = '2c7e7482cbad43f4b0ebb7793a00277c'; // 合作方企业平台ID 随便来的一个  2c7e7482cbad43f4b0ebb7793a00277c
+        private $url       = 'http://test.tc.mybank.cn/gop/gateway.do';
+        private $uid       = '2c7e7482cbad43f4b0ebb7793a00277c'; // 合作方企业平台ID 随便来的一个  2c7e7482cbad43f4b0ebb7793a00277c
         //private $signUrl = 'http://192.168.1.106:8080/forwarder/getSign'; // 获取签名URL
         //private $signUrl = 'http://192.168.1.10:8888/forwarder/getSign'; // 获取签名URL
-        private $signUrl = 'http://101.251.247.162:8000/forwarder/getSign'; // 获取签名URL
+        private $signUrl   = 'http://101.251.247.162:8000/forwarder/getSign'; // 获取签名URL
         private $sign_type = 'TWSIGN'; // 签名类型
-        private $method = 'POST'; // 请求类型
+        private $method    = 'POST'; // 请求类型
 
         /*
          * Effect 开户
-         * author yangyunhao@xiaohe.com
+         * author yangyunhao
          * time   2017-11-3 15:43:23
          * */
         public function open(){
-            $parameter = [
-                'charset' => 'UTF-8', //
-                'partner_id' => '200001220534', //  合作者ID
-                'service' => 'mybank.tc.user.enterprise.register', // 请求地址
-                'version' => '2.0',
-                'uid' => '2c7e7482cbad43f4b0ebb7793a00277c', // 合作方企业平台ID 随便来的一个  2c7e7482cbad43f4b0ebb7793a00277c
-                'enterprise_name' => '小马过河幼儿园', // 企业名称
+            $parameter              = [
+                'charset'                    => 'UTF-8', //
+                'partner_id'                 => '200001220534', //  合作者ID
+                'service'                    => 'mybank.tc.user.enterprise.register', // 请求地址
+                'version'                    => '2.0',
+                'uid'                        => '2c7e7482cbad43f4b0ebb7793a00277c', // 合作方企业平台ID 随便来的一个  2c7e7482cbad43f4b0ebb7793a00277c
+                'enterprise_name'            => '*****幼儿园', // 企业名称
                 'unified_social_credit_code' => '132' // 统一社会信用代码
             ]; // 组装参数
-            $sign = $this->curl($this->signUrl,$parameter,$this->method); // 获取签名
-            $parameter['sign'] = $sign; // 签名
+            $sign                   = $this->curl($this->signUrl,$parameter,$this->method); // 获取签名
+            $parameter['sign']      = $sign; // 签名
             $parameter['sign_type'] = $this->sign_type; // 签名类型
-            $result = $this->curl($this->url,$parameter,$this->method); // 进行开户
+            $result                 = $this->curl($this->url,$parameter,$this->method); // 进行开户
             print_r($result);die; // {"charset":"UTF-8","is_success":"T","member_id":"200001240098"}
         }
 
         /*
          * Effect 绑卡
-         * author yangyunhao@xiaohe.com
+         * author yangyunhao
          * time   2017-11-3 17:25:15
          * */
         public function tieCard(){
-            $parameter = [
-                'service' => 'mybank.tc.user.bankcard.bind', // 接口名称
-                'uid' => '2c7e7482cbad43f4b0ebb7793a00277c', // 业务平台用户ID
-                'bank_name' => '民生银行', // 银行全称
-                'branch_no' => '305100001057', // 联行号
-                'bank_account_no' => '697943185',// 银行卡号
-                'account_name' => '北京小禾在线教育有限公司', // 开户名
-                'card_type' => 'DC', // 卡类型
-                'card_attribute' => 'B', // 卡属性
+            $parameter         = [
+                'service'         => 'mybank.tc.user.bankcard.bind', // 接口名称
+                'uid'             => '****************************', // 业务平台用户ID
+                'bank_name'       => '民生银行', // 银行全称
+                'branch_no'       => '***********', // 联行号
+                'bank_account_no' => '*******',// 银行卡号
+                'account_name'    => '北京***在线教育有限公司', // 开户名
+                'card_type'       => 'DC', // 卡类型
+                'card_attribute'  => 'B', // 卡属性
             ];// 组装请求参数
-            $data = array_merge($parameter,$this->original);
-            $sign = $this->curl($this->signUrl,$data,$this->method);
-            $data['sign'] = $sign;
+            $data              = array_merge($parameter,$this->original);
+            $sign              = $this->curl($this->signUrl,$data,$this->method);
+            $data['sign']      = $sign;
             $data['sign_type'] = $this->sign_type;
-            $result = $this->curl($this->url,$data,$this->method);
+            $result            = $this->curl($this->url,$data,$this->method);
             print_r($result);die;
             //{"bank_id":"1261","charset":"UTF-8","is_success":"T"}
         }
 
         /*
          * Effect 省市查询
-         * author yangyunhao@xiaohe.com
+         * author yangyunhao
          * time   2017-11-3 15:43:23
          * */
         public function area(){
-            $parameter = [
-                'service' => 'mybank.tc.user.area.query',
+            $parameter         = [
+                'service'              => 'mybank.tc.user.area.query',
                 'parent_district_code' => 'ROOT'
             ]; // 参数组装 北京 为 110000 河北为 130000 承德为 130800
-            $data = array_merge($parameter,$this->original);
-            $sign = $this->curl($this->signUrl,$data,'POST');
-            $data['sign'] = $sign; // 签名
+            $data              = array_merge($parameter,$this->original);
+            $sign              = $this->curl($this->signUrl,$data,'POST');
+            $data['sign']      = $sign; // 签名
             $data['sign_type'] = $this->sign_type; // 签名类型
-            $result = $this->curl($this->url,$data,$this->method);
-            $result = json_decode($result,true);
-            $result = isset($result['district_list'])?$result['district_list']:[]; // 数据检测降维
+            $result            = $this->curl($this->url,$data,$this->method);
+            $result            = json_decode($result,true);
+            $result            = isset($result['district_list'])?$result['district_list']:[]; // 数据检测降维
             print_r($result);die;
         }
 
         /*
          * Effect 银行列表查询
-         * author yangyunhao@xiaohe.com
+         * author yangyunhao
          * time   2017-11-3 15:43:23
          * */
         public function bankList(){
-            $parameter = [
-                'service' => 'mybank.tc.user.area.bank.query',
+            $parameter         = [
+                'service'          => 'mybank.tc.user.area.bank.query',
                 'parent_branch_no' => 'ROOT', // 父连号
-                'area_code' => '110108', // 区域编码
+                'area_code'        => '110108', // 区域编码
             ]; // 参数组装
-            $data = array_merge($parameter,$this->original);
-            $sign = $this->curl($this->signUrl,$data,$this->method);
-            $data['sign'] = $sign;
+            $data              = array_merge($parameter,$this->original);
+            $sign              = $this->curl($this->signUrl,$data,$this->method);
+            $data['sign']      = $sign;
             $data['sign_type'] = $this->sign_type;
-            $result = $this->curl($this->url,$data,$this->method);
-            $result = json_decode($result,true);
+            $result            = $this->curl($this->url,$data,$this->method);
+            $result            = json_decode($result,true);
             print_r($result);die;
         }
 
         /*
          * Effect 银行卡列表
-         * author yangyunhao@xiaohe.com
+         * author yangyunhao
          * time   2017-11-3 21:07:53
          * */
         public function bankCardList(){
-            $parameter = [
-                'uid' => $this->uid,
+            $parameter         = [
+                'uid'     => $this->uid,
                 'service' => 'mybank.tc.user.bankcard.query',
             ];
-            $data = array_merge($this->original,$parameter);
-            $sign = $this->curl($this->signUrl,$data,$this->method);
-            $data['sign'] = $sign;
+            $data              = array_merge($this->original,$parameter);
+            $sign              = $this->curl($this->signUrl,$data,$this->method);
+            $data['sign']      = $sign;
             $data['sign_type'] = $this->sign_type;
-            $result = $this->curl($this->url,$data,$this->method);
-            $result = json_decode($result,true);
+            $result            = $this->curl($this->url,$data,$this->method);
+            $result            = json_decode($result,true);
             print_r($result);die;
         }
 
         /*
          * Effect 解绑
-         * author yangyunhao@xiaohe.com
+         * author yangyunhao
          * time   2017-11-3 15:43:23
          * */
         public function destroy(){
-            $parameter = [
-                'uid' => $this->uid, // 合作方业务平台ID
+            $parameter         = [
+                'uid'     => $this->uid, // 合作方业务平台ID
                 'bank_id' => '1261', // 银行卡编号
                 'service' => 'mybank.tc.user.bankcard.unbind', // 接口地址
             ]; // 组装参数
-            $data = array_merge($this->original,$parameter); // 合并公共请求参数 与 此接口请求参数
-            $sign = $this->curl($this->signUrl,$data,$this->method); // 获取签名
-            $data['sign'] = $sign; // 组装签名
+            $data              = array_merge($this->original,$parameter); // 合并公共请求参数 与 此接口请求参数
+            $sign              = $this->curl($this->signUrl,$data,$this->method); // 获取签名
+            $data['sign']      = $sign; // 组装签名
             $data['sign_type'] = $this->sign_type; // 组装签名类型
-            $result = $this->curl($this->url,$data,$this->method); // 解绑银行卡
+            $result            = $this->curl($this->url,$data,$this->method); // 解绑银行卡
             print_r($result);die;
         }
 
         /*
          * Effect 获取银行卡列表
-         * author yangyunhao@xiaohe.com
+         * author yangyunhao
          * time   2017-11-3 15:43:23
          * */
         public function getBankList(){
-            $parameter = [
-                'uid' => '1653053daa784899ab1a2bfc4ac2e8c2',
+            $parameter         = [
+                'uid'     => '1653053daa784899ab1a2bfc4ac2e8c2',
                 'service' => 'mybank.tc.user.bankcard.query', // 接口地址
             ];
-            $data = array_merge($this->original,$parameter);
-            $sign = $this->curl($this->signUrl,$data,$this->method);
-            $data['sign'] = $sign;
+            $data              = array_merge($this->original,$parameter);
+            $sign              = $this->curl($this->signUrl,$data,$this->method);
+            $data['sign']      = $sign;
             $data['sign_type'] = $this->sign_type;
-            $result = $this->curl($this->url,$data,$this->method);
+            $result            = $this->curl($this->url,$data,$this->method);
             print_r($result);die;
         }
 
         /*
          * Effect 提现
-         * author yangyunhao@xiaohe.com
+         * author yangyunhao
          * time   2017-11-3 15:43:23
          * */
         public function withdrawals(){
-            $trade_no = md5(time());
-            $parameter = [
-                'outer_trade_no' => $trade_no,
-                'uid' => '27166d815c9b440bba37678099ad3e6c',
+            $trade_no          = md5(time());
+            $parameter         = [
+                'outer_trade_no'      => $trade_no,
+                'uid'                 => '27166d815c9b440bba37678099ad3e6c',
                 'outer_inst_order_no' => $trade_no,
-                'white_channel_code' => 'MYBANK00055',
-                'account_type' => 'BASIC',
-                'bank_id' => '1328',
-                'amount' => '1.00',
-                'notify_url' => 'http://xfb.xiaohe.com/Bank/withdrawalsNotify',
-                'service' => 'mybank.tc.trade.paytocard',
+                'white_channel_code'  => 'MYBANK00055',
+                'account_type'        => 'BASIC',
+                'bank_id'             => '1328',
+                'amount'              => '1.00',
+                'notify_url'          => 'http://xfb.xiaohe.com/Bank/withdrawalsNotify',
+                'service'             => 'mybank.tc.trade.paytocard',
             ];
-            $data = array_merge($parameter,$this->original);
-            $sign = $this->curl($this->signUrl,$data,$this->method);
-            $data['sign'] = $sign;
+            $data              = array_merge($parameter,$this->original);
+            $sign              = $this->curl($this->signUrl,$data,$this->method);
+            $data['sign']      = $sign;
             $data['sign_type'] = $this->sign_type;
-            $result = $this->curl($this->url,$data,$this->method);
-            $result = json_decode($result,true);
+            $result            = $this->curl($this->url,$data,$this->method);
+            $result            = json_decode($result,true);
             print_r($result);die;
         }
 
         /*
          * Effect CURL 请求
-         * author yangyunhao@xiaohe.com
+         * author yangyunhao
          * time   2017-11-3 15:43:23
          * */
         public function query(){
-            $parameter = [
+            $parameter         = [
                 'start_time' => '20140101020101',
-                'end_time' => '20140617020101',
-                'service' => 'mybank.tc.trade.query', // 接口地址
+                'end_time'   => '20140617020101',
+                'service'    => 'mybank.tc.trade.query', // 接口地址
             ];
-            $data = array_merge($this->original,$parameter);
-            $sign = $this->curl($this->signUrl,$data,$this->method);
-            $data['sign'] = $sign;
+            $data              = array_merge($this->original,$parameter);
+            $sign              = $this->curl($this->signUrl,$data,$this->method);
+            $data['sign']      = $sign;
             $data['sign_type'] = $this->sign_type;
-            $result = $this->curl($this->url,$data,$this->method);
-            $result = json_decode($result,true);
+            $result            = $this->curl($this->url,$data,$this->method);
+            $result            = json_decode($result,true);
             print_r($result);die;
         }
 
         /*
          * Effect CURL 请求
-         * author yangyunhao@xiaohe.com
+         * author yangyunhao
          * time   2017-11-3 15:43:23
          * */
         public function curl($url,$data,$method){
